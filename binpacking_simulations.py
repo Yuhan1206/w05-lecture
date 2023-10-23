@@ -19,32 +19,33 @@ max_size = 30
 
 # Generate random sets of items
 item_sets = np.random.randint(min_size, max_size + 1, (N_sets, N_items))
-print(item_sets)
+# print(item_sets)
 
 # Start an empty list
 N_open_bins = []
-I_open_bins = []
-D_open_bins = []
+
+
+# Methods we want to try
+methods = [None, 'increasing', 'decreasing']
 
 # Test the no-sorting method on all the examples
-for set_number in range(N_sets):
-    N_bins = bp.first_fit(list(item_sets[set_number, :]), bin_capacity)
-    I_bins = bp.first_fit(list(item_sets[set_number, :]), bin_capacity, sorting = 'increasing')
-    D_bins = bp.first_fit(list(item_sets[set_number, :]), bin_capacity, sorting = 'decreasing')
-    N_open_bins.append(len(N_bins))
-    I_open_bins.append(len(I_bins))
-    D_open_bins.append(len(D_bins))
+for method in methods:   
+    for set_number in range(N_sets):
+        N_bins = bp.first_fit(list(item_sets[set_number, :]), bin_capacity, sorting=method)
+        N_open_bins.append(len(N_bins))
 
-print(N_open_bins)
-print(I_open_bins)
-print(D_open_bins)
+    plt.hist(N_open_bins, alpha=0.5, label=f'Method: {method}')
+    N_open_bins = []
+plt.legend()
+plt.show()
+
 
 # Visualise the results
-fig, ax = plt.subplots(1,3)
-ax[0].hist(N_open_bins)
-ax[1].hist(I_open_bins)
-ax[2].hist(D_open_bins)
-plt.show()
+# fig, ax = plt.subplots(1,3)
+# ax[0].hist(N_open_bins)
+# ax[1].hist(I_open_bins)
+# ax[2].hist(D_open_bins)
+# plt.show()
 
 
 
